@@ -640,6 +640,9 @@
         L.push(parts('.sticky-oper-exit') + ' { opacity: 0 !important; transform: translateY(' + GLASS_RISE + ') !important; }');
         // react-transition-group 在 active 阶段同时挂着 enter 和 enter-active，要单独放回去
         L.push(parts('.sticky-oper-enter.sticky-oper-enter-active') + ' { opacity: 1 !important; transform: none !important; }');
+        // 底变透明后，吸顶栏一被单独合成（滚动时常发生）文字就从子像素抗锯齿退成灰度，停下又切回来，
+        // 看着像字在闪。让标题和按钮常驻自己的图层，抗锯齿固定一种。毛玻璃层不加，免得又截断模糊
+        L.push(OPER + ' > :not([class*="StyledStickyMask_"]) { will-change: transform; }');
         return L.join('\n');
     }
 
